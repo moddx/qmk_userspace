@@ -81,7 +81,7 @@ bool process_record_pointing(uint16_t keycode, keyrecord_t* record) {
 #elif (defined(KEYBOARD_bastardkb_charybdis) || defined(KEYBOARD_handwired_tractyl_manuform)) && !defined(NO_CHARYBDIS_KEYCODES)
         case QK_KB ... QK_KB_MAX:
 #endif
-        case KC_MS_UP ... KC_MS_WH_RIGHT:
+        case MS_UP ... MS_WHLR:
             record->event.pressed ? mouse_keycode_tracker++ : mouse_keycode_tracker--;
             mouse_timer = timer_read();
             break;

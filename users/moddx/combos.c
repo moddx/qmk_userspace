@@ -60,17 +60,17 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       break;
     case LEFT_CLICK:
       if (pressed) {
-        tap_code(KC_BTN1);
+        tap_code(MS_BTN1);
       }
       break;
     case RIGHT_CLICK:
       if (pressed) {
-        tap_code(KC_BTN2);
+        tap_code(MS_BTN2);
       }
       break;
     case MIDDLE_CLICK:
       if (pressed) {
-        tap_code(KC_BTN3);
+        tap_code(MS_BTN3);
       }
       break;
     case TOGGLE_SCROLL:
