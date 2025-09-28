@@ -1,4 +1,5 @@
 #include "moddx.h"
+#include "keycodes.h"
 #include "pointing/pointing.h"
 #include "window_swapper.h"
 
@@ -65,22 +66,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_X,         KC_V,          KC_L,          KC_C,          KC_W,           KC_K,   KC_H,   KC_G,    KC_F,    KC_Q,
 		LALT_T(KC_U), LT(_L4, KC_I), LT(_L5, KC_A), LT(_L3, KC_E), KC_O,           KC_S,   KC_N,   KC_R,    KC_T,    KC_D,
 		LSFT_T(DE_Y), MO(_MOUSE),    QK_LEAD,       KC_P,          DE_Z,           KC_B,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(KC_J),
-		                TOGGLE_LEFT_ENCODER,       KC_LCTL,       MO(_L1),        KC_SPC, MO(_L2), KC_MUTE
+		                TOGGLE_LEFT_ENCODER,        MY_CMD_CTRL,   MO(_L1),        KC_SPC, MO(_L2), KC_MUTE
     ),
 
     [_HL] = LAYOUT(
-		KC_TAB,  KC_Q, KC_W, KC_E, KC_R,           KC_Z,   KC_U,   KC_I,    KC_O,    KC_P,
-		KC_LSFT, KC_A, KC_S, KC_D, KC_F,           KC_H,   KC_J,   KC_K,    KC_L,    QK_LEAD,
-		KC_LCTL, DE_Y, DE_5, KC_4, KC_3,           KC_N,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(DE_MINS),
-		               KC_2, KC_1, KC_SPC,         KC_ESC, TG(_HL), KC_TRNS
+		KC_TAB,      KC_Q, KC_W, KC_E, KC_R,           KC_Z,   KC_U,   KC_I,    KC_O,    KC_P,
+		KC_LSFT,     KC_A, KC_S, KC_D, KC_F,           KC_H,   KC_J,   KC_K,    KC_L,    QK_LEAD,
+		MY_CMD_CTRL, DE_Y, DE_5, KC_4, KC_3,           KC_N,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(DE_MINS),
+		                   KC_2, KC_1, KC_SPC,         KC_ESC, TG(_HL), KC_TRNS
     ),
 
     // _L1
 	[_L1] = LAYOUT(
-        KC_TAB,  KC_ESC,     KC_ENT,     LCTL(DE_Z), KC_INS,        DM_REC1, DE_HASH,       DE_LCBR, DE_RCBR, KC_MPLY,
-		KC_LCTL, KC_SPC,     LCTL(KC_S), KC_HOME,    KC_END,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RGHT, DE_LPRN,
-		KC_LSFT, LCTL(KC_X), LCTL(KC_C), LCTL(KC_V), OSM(MOD_LSFT), KC_DEL,  KC_BSPC,       DE_LBRC, DE_RBRC, DE_RPRN,
-		                     KC_TRNS,    KC_TRNS,    KC_TRNS,       KC_LALT, OSM(MOD_LGUI), KC_TRNS
+        KC_TAB,      KC_ESC,  KC_ENT,   MY_UNDO,   KC_INS,        DM_REC1, DE_HASH,       DE_LCBR, DE_RCBR, KC_MPLY,
+		MY_CMD_CTRL, KC_SPC,  MY_SAVE,  KC_HOME,   KC_END,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RGHT, DE_LPRN,
+		KC_LSFT,     MY_CUT,  MY_COPY,  MY_PASTE,  OSM(MOD_LSFT), KC_DEL,  KC_BSPC,       DE_LBRC, DE_RBRC, DE_RPRN,
+		                      KC_TRNS,  KC_TRNS,   KC_TRNS,       KC_LALT, OSM(MOD_LGUI), KC_TRNS
     ),
 
 	// _L2
@@ -142,12 +143,21 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     return true;
 }
 
+void handleMacOsCompat(os_variant_t os, uint16_t keycode) {
+    if (os == OS_MACOS) {
+        tap_code16(LCMD(keycode));
+    } else {
+        tap_code16(LCTL(keycode));
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_record_pointing(keycode, record)
         || process_window_swapper(keycode, record) != PROCESS_RECORD_CONTINUE
         ) { return false; }
     //if (!process_caps_word(keycode, record)) { return false; }
+
+    os_variant_t os = detected_host_os();
 
     switch (keycode) {
     case EMAIL:
@@ -158,12 +168,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when keycode EMAIL is released
         }
         break;
+    case MY_COPY:
+        if (record->event.pressed) {
+            handleMacOsCompat(os, KC_C);
+        }
+        break;
+    case MY_PASTE:
+        if (record->event.pressed) {
+            handleMacOsCompat(os, KC_V);
+        }
+        break;
+    case MY_CUT:
+        if (record->event.pressed) {
+            handleMacOsCompat(os, KC_X);
+        }
+        break;
+    case MY_UNDO:
+        if (record->event.pressed) {
+            handleMacOsCompat(os, DE_Z);
+        }
+        break;
+    case MY_SAVE:
+        if (record->event.pressed) {
+            handleMacOsCompat(os, KC_S);
+        }
+        break;
+    case MY_CMD_CTRL:
+        uint16_t modifier = os == OS_MACOS ? MOD_MASK_GUI : MOD_MASK_CTRL;
+        if (record->event.pressed) {
+            register_mods(modifier);
+        } else {
+            unregister_mods(modifier);
+        }
+        break;
     case TOGGLE_LEFT_ENCODER:
         if (record->event.pressed) {
-            // when keycode EMAIL is pressed
             leftEncoderToggled = !leftEncoderToggled;
-        } else {
-            // when TOGGLE_LEFT_ENCODER is released
         }
         break;
     case LSFT_T(DE_Z):

@@ -1,23 +1,31 @@
 {
+    "manufacturer": "foostan",
+    "url": "https://github.com/foostan/crkbd",
+    "maintainer": "qmk",
+    "usb": {
+        "vid": "0x4653"
+    },
     "features": {
-        "rgblight": true
+        "bootmagic": true,
+        "extrakey": true,
+        "nkro": true,
+        "oled": true,
+        "rgblight": false,
+        "rgb_matrix": true
+    },
+    "bootmagic": {
+        "matrix": [0, 1]
     },
     "split": {
-        "soft_serial_pin": "GP1",
-        "transport": {
-            "sync": {
-                "matrix_state": true
-            }
+        "enabled": true,
+        "bootmagic": {
+            "matrix": [4, 1]
         }
     },
-    "ws2812": {
-        "pin": "GP0"
-    },
-    "development_board": "promicro",
     "layout_aliases": {
-        "LAYOUT": "LAYOUT_split_3x5_3"
+        "LAYOUT": "LAYOUT_split_3x6_3"
     },
-    "bootloader": "caterina",
+    "community_layouts": [ "split_3x5_3", "split_3x6_3" ],
     "layouts": {
         "LAYOUT_split_3x5_3": {
             "layout": [
@@ -119,5 +127,12 @@
                 {"matrix": [7, 3], "x": 10, "y": 3.7}
             ]
         }
+    },
+    "rgb_matrix": {
+        "driver": "ws2812",
+        "max_brightness": 120
+    },
+    "rgblight": {
+        "max_brightness": 120
     }
 }

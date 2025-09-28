@@ -16,7 +16,12 @@ enum custom_keycodes {
     TOGGLE_LEFT_ENCODER,
     MC_SWLE,
     MC_SWRI,
-    TG_MAC, TG_WIN, TG_LIN,
     KC_ACCEL,
+    MY_COPY,
+    MY_PASTE,
+    MY_CUT,
+    MY_UNDO,
+    MY_SAVE,
+    MY_CMD_CTRL,
     KEYCODES_RANGE
 };

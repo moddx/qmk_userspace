@@ -1,12 +1,12 @@
 #include "window_swapper.h"
 #include "keycodes.h"
 
-extern os_t os;
 
 static bool swapping = false;
 
 process_record_result_t process_window_swapper(uint16_t keycode, keyrecord_t *record) {
-    bool isWindowsOrLinux = os.type != MACOS;
+    os_variant_t os = detected_host_os();
+    bool isWindowsOrLinux = os != OS_MACOS;
 
     if (swapping && keycode != MC_SWLE && keycode != MC_SWRI) {
         swapping = false;

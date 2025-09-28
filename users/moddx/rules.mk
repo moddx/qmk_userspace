@@ -1,13 +1,13 @@
 
 ifdef rp2040
-	#MCU = RP2040
-	#BOOTLOADER = rp2040
-	#ALLOW_WARNINGS = yes
-	#PICO_INTRINSICS_ENABLED = no # ATM Unsupported by ChibiOS
+# 	MCU = RP2040
+# 	BOOTLOADER = rp2040
+# 	ALLOW_WARNINGS = yes
+# 	PICO_INTRINSICS_ENABLED = no # ATM Unsupported by ChibiOS
 	SERIAL_DRIVER = vendor
 	WS2812_DRIVER = vendor
 #	POINTING_DEVICE_ENABLE = no
-	DEFAULT_FOLDER = crkbd/rev1
+# 	DEFAULT_FOLDER = crkbd/rev1
 	NKRO_ENABLE = yes
 endif
 
@@ -46,6 +46,8 @@ CAPS_WORD_ENABLE = no
 LEADER_ENABLE = yes
 COMBO_ENABLE = yes
 
+OS_DETECTION_ENABLE = yes
+
 
 INTROSPECTION_KEYMAP_C = users/moddx/combos.c
 
@@ -53,5 +55,4 @@ KEYMAP_C = users/moddx/moddx.c
 #SRC += users/moddx/tapdances.c
 #SRC += users/moddx/combos.c
 SRC += users/moddx/pointing/pointing.c
-SRC += users/moddx/os_toggle.c
 SRC += users/moddx/window_swapper.c
