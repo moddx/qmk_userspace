@@ -19,20 +19,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #define LAYOUT LAYOUT_split_3x5_3
-
-/* Set 0 if debouncing isn't needed */
-#define DEBOUNCE 5
-
-/* Handedness. */
-#define MASTER_LEFT
-
-#define USB_VBUS_PIN GP0
-
-#define USE_SERIAL
-/* serial.c configuration (for split keyboard). */
-//#define SOFT_SERIAL_PIN GP1
-
-/* Reset. */
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
-//#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17
-//#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 1000U
