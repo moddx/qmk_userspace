@@ -66,29 +66,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_X,         KC_V,          KC_L,          KC_C,          KC_W,           KC_K,   KC_H,   KC_G,    KC_F,    KC_Q,
 		LALT_T(KC_U), LT(_L4, KC_I), LT(_L5, KC_A), LT(_L3, KC_E), KC_O,           KC_S,   KC_N,   KC_R,    KC_T,    KC_D,
 		LSFT_T(DE_Y), MO(_MOUSE),    QK_LEAD,       KC_P,          DE_Z,           KC_B,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(KC_J),
-		                TOGGLE_LEFT_ENCODER,        MY_CMD_CTRL,   MO(_L1),        KC_SPC, MO(_L2), KC_MUTE
+		                TOGGLE_LEFT_ENCODER,        KC_LCTL,       MO(_L1),        KC_SPC, MO(_L2), KC_MUTE
     ),
 
     [_HL] = LAYOUT(
 		KC_TAB,      KC_Q, KC_W, KC_E, KC_R,           KC_Z,   KC_U,   KC_I,    KC_O,    KC_P,
 		KC_LSFT,     KC_A, KC_S, KC_D, KC_F,           KC_H,   KC_J,   KC_K,    KC_L,    QK_LEAD,
-		MY_CMD_CTRL, DE_Y, DE_5, KC_4, KC_3,           KC_N,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(DE_MINS),
+		KC_LCTL,     DE_Y, DE_5, KC_4, KC_3,           KC_N,   KC_M,   KC_COMM, KC_DOT,  RSFT_T(DE_MINS),
 		                   KC_2, KC_1, KC_SPC,         KC_ESC, TG(_HL), KC_TRNS
     ),
 
     // _L1
 	[_L1] = LAYOUT(
         KC_TAB,      KC_ESC,  KC_ENT,   MY_UNDO,   KC_INS,        DM_REC1, DE_HASH,       DE_LCBR, DE_RCBR, KC_MPLY,
-		MY_CMD_CTRL, KC_SPC,  MY_SAVE,  KC_HOME,   KC_END,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RGHT, DE_LPRN,
+		KC_LCTL,     KC_SPC,  MY_SAVE,  KC_HOME,   KC_END,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RGHT, DE_LPRN,
 		KC_LSFT,     MY_CUT,  MY_COPY,  MY_PASTE,  OSM(MOD_LSFT), KC_DEL,  KC_BSPC,       DE_LBRC, DE_RBRC, DE_RPRN,
 		                      KC_TRNS,  KC_TRNS,   KC_TRNS,       KC_LALT, OSM(MOD_LGUI), KC_TRNS
     ),
 
 	// _L2
 	[_L2] = LAYOUT(
-		EMAIL,          DE_BSLS,     DE_EQL,  DE_AMPR, DE_TILD,       DM_PLY1, LSFT(KC_F3), DE_ASTR, KC_F3,   DE_PLUS,
-		LCTL_T(DE_AT),  DE_LABK,     DE_RABK, DE_MINS, DE_PIPE,       MC_SWLE, KC_PGDN,     KC_PGUP, MC_SWRI, KC_TRNS,
-		LSFT_T(KC_APP), LALT(KC_F4), KC_NO,   KC_NO,   KC_NO,         DE_SS,   DE_UDIA,     DE_ODIA, DE_ADIA, KC_RSFT,
+		EMAIL,          MY_BACKSLASH, DE_EQL,  DE_AMPR, MY_TILDE,     DM_PLY1, LSFT(KC_F3), DE_ASTR, KC_F3,   DE_PLUS,
+		MY_MONKEY,      DE_LABK,     DE_RABK, DE_MINS, DE_PIPE,       MC_SWLE, KC_PGDN,     KC_PGUP, MC_SWRI, KC_TRNS,
+		LSFT_T(KC_APP), LALT(KC_F4), KC_NO,   KC_NO,   KC_MISSION_CONTROL, DE_SS,   DE_UDIA,     DE_ODIA, DE_ADIA, KC_RSFT,
 		                             KC_TRNS, KC_CAPS, KC_TRNS,       KC_TRNS, KC_TRNS, KC_TRNS
     ),
 
@@ -199,6 +199,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             register_mods(modifier);
         } else {
             unregister_mods(modifier);
+        }
+        break;
+    case MY_TILDE:
+        if (record->event.pressed) {
+            os == OS_MACOS ? tap_code16(LOPT(KC_N)) : tap_code16(DE_TILD);
+        }
+        break;
+    case MY_BACKSLASH:
+        if (record->event.pressed) {
+            os == OS_MACOS ? tap_code16(LOPT(LSFT(KC_7))) : tap_code16(DE_BSLS);
+        }
+        break;
+    case MY_MONKEY:
+        if (record->event.pressed) {
+            os == OS_MACOS ? tap_code16(LOPT(KC_L)) : tap_code16(DE_AT);
         }
         break;
     case TOGGLE_LEFT_ENCODER:

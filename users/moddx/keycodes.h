@@ -17,11 +17,17 @@ enum custom_keycodes {
     MC_SWLE,
     MC_SWRI,
     KC_ACCEL,
+    // BASIC crossplatform Shortcuts
     MY_COPY,
     MY_PASTE,
     MY_CUT,
     MY_UNDO,
     MY_SAVE,
+    // weird crossplatform - maybe delete
     MY_CMD_CTRL,
+    // SINGLE crossplatform chars
+    MY_TILDE,
+    MY_BACKSLASH,
+    MY_MONKEY,
     KEYCODES_RANGE
 };
